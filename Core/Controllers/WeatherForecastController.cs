@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace UniversityManagement.Controllers
+namespace Core.Controllers
 {
     [ApiController]
     [Route("[controller]")]
@@ -18,12 +17,10 @@ namespace UniversityManagement.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
-        private readonly IMediator _mediator;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, IMediator mediator)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger)
         {
             _logger = logger;
-            _mediator = mediator;
         }
 
         [HttpGet]
