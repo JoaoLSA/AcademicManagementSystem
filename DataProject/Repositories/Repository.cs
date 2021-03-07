@@ -1,4 +1,5 @@
-﻿using CoreProject.Models;
+﻿using AutoMapper;
+using CoreProject.Models;
 using CoreProject.Repositories;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,11 @@ namespace DataProject.Repositories
     public class Repository<T> : IRepository<T>
          where T : BaseEntity
     {
+
         public Task<IEnumerable<T>> GetAllAsync()
             => Task.FromResult(new List<T>().AsEnumerable());
+
+        public Task<IEnumerable<TViewModel>> GetAllProjectedAsync<TViewModel>()
+            => Task.FromResult(new List<TViewModel>().AsEnumerable());
     }
 }

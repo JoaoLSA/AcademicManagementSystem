@@ -8,5 +8,7 @@ namespace CoreProject.Repositories
         where T : BaseEntity
     {
         Task<IEnumerable<T>> GetAllAsync();
+
+        public Task<IEnumerable<TViewModel>> GetAllProjectedAsync<TViewModel>();
     }
 }

@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SharedProject.Models
+namespace SharedProject.ViewModels
 {
-    public class Student
+    public class StudentViewModel
     {
-        public long Id { get; set; }
         public string Name { get; set; }
     }
 }

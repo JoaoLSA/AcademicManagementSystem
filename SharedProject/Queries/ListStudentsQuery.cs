@@ -1,12 +1,12 @@
 ﻿using MediatR;
-using SharedProject.Models;
+using SharedProject.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace SharedProject.Queries
 {
-    public class ListStudentsQuery : IRequest<IEnumerable<Student>>
+    public class ListStudentsQuery : IRequest<IEnumerable<StudentViewModel>>
     {
     }
 }

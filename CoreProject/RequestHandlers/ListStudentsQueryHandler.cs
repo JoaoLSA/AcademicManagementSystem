@@ -1,6 +1,8 @@
-﻿using MediatR;
-using SharedProject.Models;
+﻿using CoreProject.Models;
+using CoreProject.Repositories;
+using MediatR;
 using SharedProject.Queries;
+using SharedProject.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,12 +11,18 @@ using System.Threading.Tasks;
 
 namespace CoreProject.RequestHandlers
 {
-    public class ListStudentsQueryHandler : IRequestHandler<ListStudentsQuery, IEnumerable<Student>>
+    public class ListStudentsQueryHandler : IRequestHandler<ListStudentsQuery, IEnumerable<StudentViewModel>>
     {
+        private readonly IRepository<Student> _studentRepository;
 
-        public async Task<IEnumerable<Student>> Handle(ListStudentsQuery request, CancellationToken cancellationToken)
+        public ListStudentsQueryHandler(IRepository<Student> studentRepository)
         {
-            return await Task.FromResult(new List<Student> { new Student { Id = 1, Name = "Joao" } });
+            _studentRepository = studentRepository;
+        }
+
+        public async Task<IEnumerable<StudentViewModel>> Handle(ListStudentsQuery request, CancellationToken cancellationToken)
+        {
+            return await _studentRepository.GetAllProjectedAsync<StudentViewModel>();
         }
     } 
 }

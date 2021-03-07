@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using SharedProject.Models;
 using SharedProject.Queries;
+using SharedProject.ViewModels;
 
 namespace UniversityManagement.Controllers
 {
@@ -24,7 +24,7 @@ namespace UniversityManagement.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Student>>> Get()
+        public async Task<ActionResult<IEnumerable<StudentViewModel>>> Get()
         {
             try
             {

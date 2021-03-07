@@ -2,7 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CoreProject.Models;
+using CoreProject.Repositories;
 using CoreProject.RequestHandlers;
+using DataProject.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -17,6 +20,8 @@ namespace UniversityManagement
 {
     public class Startup
     {
+        private static readonly Type repoType = typeof(Repository<>);
+        private static readonly Type entityType = typeof(BaseEntity);
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -30,6 +35,19 @@ namespace UniversityManagement
             services.AddControllers();
 
             services.AddMediatR(typeof(ListStudentsQueryHandler));
+
+            var specificRepos = entityType.Assembly
+                  .ExportedTypes
+                  .Where(t => t.IsClass && !t.IsAbstract && entityType.IsAssignableFrom(t))
+                  .Select(oneEntityType =>
+                  {
+                      var implementationType = repoType.MakeGenericType(oneEntityType);
+                      var interfaceType = typeof(IRepository<>).MakeGenericType(oneEntityType);
+                      return (interfaceType, implementationType);
+                  });
+
+            foreach (var (interfaceType, implementationType) in specificRepos)
+                services.AddScoped(interfaceType, implementationType);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
