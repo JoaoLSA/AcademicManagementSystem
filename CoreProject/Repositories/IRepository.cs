@@ -1,5 +1,6 @@
 ﻿using CoreProject.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CoreProject.Repositories
@@ -7,7 +8,7 @@ namespace CoreProject.Repositories
     public interface IRepository<T>
         where T : BaseEntity
     {
-        Task<IEnumerable<T>> GetAllAsync();
+        IQueryable<T> GetAll();
 
         public Task<IEnumerable<TViewModel>> GetAllProjectedAsync<TViewModel>();
     }

@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using CoreProject.Models;
 using CoreProject.Repositories;
 using CoreProject.RequestHandlers;
+using DataProject;
 using DataProject.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -20,7 +22,7 @@ namespace UniversityManagement
 {
     public class Startup
     {
-        private static readonly Type repoType = typeof(Repository<>);
+        private static readonly Type repoType = typeof(Repository<,>);
         private static readonly Type entityType = typeof(BaseEntity);
         public Startup(IConfiguration configuration)
         {
@@ -34,6 +36,8 @@ namespace UniversityManagement
         {
             services.AddControllers();
 
+            services.AddDbContext<AcademicContext>(options => options.UseSqlite("Data Source=university.db"));
+
             services.AddMediatR(typeof(ListStudentsQueryHandler));
 
             var specificRepos = entityType.Assembly
@@ -41,7 +45,7 @@ namespace UniversityManagement
                   .Where(t => t.IsClass && !t.IsAbstract && entityType.IsAssignableFrom(t))
                   .Select(oneEntityType =>
                   {
-                      var implementationType = repoType.MakeGenericType(oneEntityType);
+                      var implementationType = repoType.MakeGenericType(oneEntityType, typeof(AcademicContext));
                       var interfaceType = typeof(IRepository<>).MakeGenericType(oneEntityType);
                       return (interfaceType, implementationType);
                   });

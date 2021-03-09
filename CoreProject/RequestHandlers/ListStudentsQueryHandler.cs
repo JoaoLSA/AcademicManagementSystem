@@ -22,6 +22,8 @@ namespace CoreProject.RequestHandlers
 
         public async Task<IEnumerable<StudentViewModel>> Handle(ListStudentsQuery request, CancellationToken cancellationToken)
         {
+            var students = _studentRepository.GetAll();
+            Console.WriteLine(students);
             return await _studentRepository.GetAllProjectedAsync<StudentViewModel>();
         }
     } 
