@@ -6,6 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentResults" Version="2.3.0" />
+    <PackageReference Include="FluentValidation" Version="9.5.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SharedProject\SharedProject.csproj" />
   </ItemGroup>
 
