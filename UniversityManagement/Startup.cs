@@ -7,7 +7,6 @@ using CoreProject.Repositories;
 using CoreProject.RequestHandlers;
 using DataProject;
 using DataProject.Repositories;
-using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -41,25 +40,6 @@ namespace UniversityManagement
 
             services.AddMediatR(typeof(ListStudentsQueryHandler));
 
-            AddRepositories(services);
-
-            AddValidators(services);
-        }
-
-        private void AddValidators(IServiceCollection services)
-        {
-            const string applicationAssemblyName = "DemoMediatR.Application";
-            var assembly = AppDomain.CurrentDomain.Load(applicationAssemblyName);
-
-            AssemblyScanner
-                .FindValidatorsInAssembly(assembly)
-                .ForEach(result => services.AddScoped(result.InterfaceType, result.ValidatorType));
-
-            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(FailFastRequestBehavior<,>));
-        }
-
-        private void AddRepositories(IServiceCollection services)
-        {
             var specificRepos = entityType.Assembly
                   .ExportedTypes
                   .Where(t => t.IsClass && !t.IsAbstract && entityType.IsAssignableFrom(t))
